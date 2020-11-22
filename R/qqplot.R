@@ -5,7 +5,7 @@
 
 #' @keywords xxx
 #' @examples
-#' fill
+#' 1+1
 #' @export
 test_function <- function(x,...){
 

@@ -1,12 +1,12 @@
 Package: ggecon
-Title: What the Package Does (One Line, Title Case)
+Title: Tidy ggplot themed plots for empirical finance and econometrics
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Mariana",
+           family = "Patino",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "m.patino@zeppelin-university.net",
+           comment = c(ORCID = "TBC"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Suggests: 

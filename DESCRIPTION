@@ -9,6 +9,12 @@ Authors@R:
            comment = c(ORCID = "TBC"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
+Imports:
+    tidyverse,
+    ggplot2,
+    lubridate,
+    fGarch,
+    ggforce
 Suggests: 
     testthat
 Encoding: UTF-8

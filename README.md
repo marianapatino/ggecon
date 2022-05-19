@@ -1,56 +1,68 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggecon
+# ggecon - Tidy ggplot themed plots for empirical finance and econometrics
 
-<!-- badges: start -->
+<!-- # pkgdown <img src="man/figures/logo.png" align="right" alt="" width="120" />-->
+<!-- badges: start 
+[![CRAN Status](https://www.r-pkg.org/badges/version/pkgdown)](https://cran.r-project.org/package=pkgdown){.pkgdown-release}
+[![R-CMD-check](https://github.com/r-lib/pkgdown/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/pkgdown/actions){.pkgdown-devel}
+[![Codecov test coverage](https://codecov.io/gh/r-lib/pkgdown/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/pkgdown?branch=main)
+badges: end -->
 
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/ggecon)](https://CRAN.R-project.org/package=ggecon)
-<!-- badges: end -->
-
-The goal of ggecon is to …
+ggecon opening paragraph. Learn more in `vignette("ggecon")`.
 
 ## Installation
 
-You can install the released version of ggecon from
-[CRAN](https://CRAN.R-project.org) with:
+<div class=".ggecon-devel">
 
 ``` r
-install.packages("ggecon")
+# Install development version from GitHub
+#install.packages("remotes")
+remotes::install_github("marianapatino/ggecon")
 ```
 
-## Example
+</div>
 
-This is a basic example which shows you how to solve a common problem:
+## Usage
 
 ``` r
+options(tidyverse.quiet = TRUE)
+
 library(ggecon)
-## basic example code
+library(tidyverse)
+library(ggplot2)
+library(highfrequency)
+library(xts)
+library(ggforce)
+
+quotes <- highfrequency::sampleQData %>% highfrequency::aggregateQuotes(alignBy = "seconds",alignPeriod = 5)%>% select(DT,ret = MIDQUOTE)
+log_returns <- as.xts(quotes) %>% highfrequency::makeReturns()
+
+normal_dist_logret   <- rnorm(length(log_returns),
+                    mean= mean(log_returns),
+                    sd = sd(log_returns))
+
+dist1 <- log_returns %>% as.data.frame() %>% remove_rownames() %>% mutate(type = "logret")
+dist2 <- normal_dist_logret %>% data.frame(ret = .) %>% mutate(type = "normdist")
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+Basic version:
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+compare_distributions(dist1,dist2,zoom_tail = "left") 
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date.
+![](man/figures/unnamed-chunk-4-1.png)<!-- -->
 
-You can also embed plots, for example:
+Add ggplot syntax:
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+``` r
+compare_distributions(dist1,dist2,zoom_tail = "left") +
+  scale_color_manual(name = "Distributions",
+                     values = c("logret" = "red",
+                                "normdist" = "black"),
+                     labels = c("High Frequency Log Returns","Normal Distribution"))
+```
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub\!
+![](man/figures/unnamed-chunk-5-1.png)<!-- -->
